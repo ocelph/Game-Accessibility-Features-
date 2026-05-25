@@ -17,6 +17,63 @@ void URebindWidget::NativeConstruct()
 	AddInputRows();
 }
 
+void URebindWidget::CloseMenu()
+{
+	RemoveFromParent();
+}
+
+FReply URebindWidget::NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	// validates ActiveInputSlot (is true)
+	if (ActiveInputSlot)
+	{
+		FKey PressedKey = InKeyEvent.GetKey();
+		RebindKey(PressedKey);
+        
+		// Tells Slate the input was consumed so other window layers ignore it
+		return FReply::Handled();
+	}
+
+	return Super::NativeOnKeyDown(MyGeometry, InKeyEvent);
+}
+
+void URebindWidget::RebindKey(FKey NewKey)
+{
+	// Active Input Slot check
+	if (!ActiveInputSlot) return;
+	
+	// Make Map Player Key Args 
+	FMapPlayerKeyArgs Args;
+	Args.MappingName = ActiveInputSlot->KeyMappingName; 
+	Args.Slot = EPlayerMappableKeySlot::First;        
+	Args.NewKey = NewKey;
+	
+	
+	APlayerController* PlayerController = GetOwningPlayer();
+	if (!PlayerController) return;
+	
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+	if (!Subsystem) return;
+	
+	UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings();
+	if (!Settings) return;
+	     
+
+	// Map Player Key node
+	FGameplayTagContainer FailureReason;		// we dont use the value but if the rebind fails, Unreal Engine will use it to give errors
+	Settings->MapPlayerKey(Args, FailureReason);  // rebind process
+
+	
+	if (ActiveInputSlot->ButtonTextBlock)
+	{
+		FText KeyDisplayName = NewKey.GetDisplayName();
+		ActiveInputSlot->ButtonTextBlock->SetText(KeyDisplayName);
+	}
+	
+	Settings->SaveSettings();
+	ActiveInputSlot = nullptr;
+}
+
 
 void URebindWidget::AddInputRows()
 {
@@ -36,7 +93,7 @@ void URebindWidget::AddInputRows()
 	if (!Settings) return;
 
 	// Get Active Key Profile - profile contains all mappings currently active for the player
-	UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetCurrentKeyProfile();
+	UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetActiveKeyProfile();
 
 	if (!Profile) return;
 	
@@ -67,6 +124,7 @@ void URebindWidget::AddInputRows()
 
 		// Pass mapping name into Input Slot Widget 
 		InputSlot->KeyMappingName = Name;
+		InputSlot->RebindWidget = this;
 
 		// Make Map Player Key Args - Find the first keyboard slot for this action
 		FMapPlayerKeyArgs Args;
@@ -90,16 +148,16 @@ void URebindWidget::AddInputRows()
 			InputSlot->ButtonTextBlock->SetText(KeyMapping->GetCurrentKey().GetDisplayName());
 		}
 		
-		// GEngine->AddOnScreenDebugMessage(
-		// 	-1,
-		// 	5.0f,
-		// 	FColor::Green,
-		// 	FString::Printf(
-		// 	TEXT("%s: %s"),
-		// 	*KeyMapping->GetDisplayName().ToString(),
-		// 	*KeyMapping->GetCurrentKey().GetDisplayName().ToString()
-		// )
-		// );
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			5.0f,
+			FColor::Green,
+			FString::Printf(
+			TEXT("%s: %s"),
+			*KeyMapping->GetDisplayName().ToString(),
+			*KeyMapping->GetCurrentKey().GetDisplayName().ToString()
+		)
+		);
 		
 		VBox->AddChild(InputSlot);
 		
@@ -115,8 +173,9 @@ void URebindWidget::AddInputRows()
 	
 }
 
-
-void URebindWidget::CloseMenu()
+void URebindWidget::OnKeyButton(UInputSlotWidget* InputSlot)
 {
-	RemoveFromParent();
+	ActiveInputSlot = InputSlot;
+	SetKeyboardFocus();
 }
+

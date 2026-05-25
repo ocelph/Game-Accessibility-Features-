@@ -33,15 +33,24 @@ class D1_ACCESSIBILITY_API URebindWidget : public UUserWidget
 	UPROPERTY(meta = (BindWidget))
 	UVerticalBox* VBox;
 	
-	// CREATE ALL INPUT ROWS
+	// ADD INPUT ACTION ROWS
 	void AddInputRows();
+	
+	// replicates the "Any Key" blueprint event node
+	virtual FReply NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 	
 public:
 	// INPUT SLOT CLASS
 	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = "UI")
 	TSubclassOf<UInputSlotWidget> InputSlotWidgetClass;
-
 	
-
+	// When Button is pressed save Active Input Slot
+	void OnKeyButton(UInputSlotWidget* InputSlot);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Rebinding")
+	UInputSlotWidget* ActiveInputSlot;
+	
+	// Change the key binding
+	void RebindKey(FKey NewKey);
 	
 };

@@ -5,16 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58414001-b3ea-46d7-acac-43939c530a5c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.d1_accessibility.dir/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/Actions/IA_Jump.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/Actions/IA_Jump.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/IA_OpenMenu.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/IMC_Default.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/IMC_Default.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/BP_A11yMenuWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/BP_A11yMenuWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/A11yMenuWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/A11yMenuWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/A11yMenuWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/A11yMenuWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/d1_accessibilityCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/d1_accessibilityCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/d1_accessibilityCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/d1_accessibilityCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.d1_accessibility.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.d1_accessibility.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/BP_RebindWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/BP_RebindWidget.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/InputSlotWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/InputSlotWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,15 +32,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="d1_accessibility" type="Uproject" factoryName="rider.uproject">
       <configuration_1 setup="1">
@@ -129,6 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1779722765685</updated>
       <workItem from="1779722776719" duration="14837000" />
+      <workItem from="1779739835846" duration="3253000" />
     </task>
     <servers />
   </component>
