@@ -14,6 +14,8 @@ class Ad1_accessibilityGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	virtual void BeginPlay() override;
+	
 public:
 	
 	/** Constructor */
