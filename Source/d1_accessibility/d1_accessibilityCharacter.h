@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "A11yMenuWidget.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "Blueprint/UserWidget.h"
 #include "d1_accessibilityCharacter.generated.h"
 
 class USpringArmComponent;
@@ -31,6 +33,9 @@ class Ad1_accessibilityCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 	
+	UPROPERTY(EditAnywhere, Category = UI)
+	TSubclassOf<UA11yMenuWidget> AccessibilityMenuClass;
+	
 protected:
 
 	/** Jump Input Action */
@@ -49,6 +54,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
+	/** Tab Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* OpenMenuAction;
+
 public:
 
 	/** Constructor */
@@ -66,6 +75,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	
+	/** Called for tab input */
+	void OpenMenu();
 
 public:
 

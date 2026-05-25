@@ -65,6 +65,9 @@ void Ad1_accessibilityCharacter::SetupPlayerInputComponent(UInputComponent* Play
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &Ad1_accessibilityCharacter::Look);
+		
+		// Tab open a11y menu
+		EnhancedInputComponent->BindAction(OpenMenuAction, ETriggerEvent::Started, this, &Ad1_accessibilityCharacter::OpenMenu);
 	}
 	else
 	{
@@ -88,6 +91,25 @@ void Ad1_accessibilityCharacter::Look(const FInputActionValue& Value)
 
 	// route the input
 	DoLook(LookAxisVector.X, LookAxisVector.Y);
+}
+
+void Ad1_accessibilityCharacter::OpenMenu()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Tab pressed"));
+	
+	if (AccessibilityMenuClass)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Accessibility Menu Opened"));
+
+		//  create a new User Widget of our AccessibilityMenuClass, and make it be managed by our Game Instance
+		UA11yMenuWidget* AccessibilityMenu = Cast<UA11yMenuWidget>(CreateWidget(GetGameInstance(), AccessibilityMenuClass));
+
+		// set the Input Mode to only be UI, and turn the mouse cursor on
+		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		
+		AccessibilityMenu->AddToViewport();
+	}
 }
 
 void Ad1_accessibilityCharacter::DoMove(float Right, float Forward)
