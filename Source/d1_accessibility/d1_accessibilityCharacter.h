@@ -6,12 +6,12 @@
 #include "A11yMenuWidget.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "Blueprint/UserWidget.h"
 #include "d1_accessibilityCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
+class UInputMappingContext;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -35,7 +35,11 @@ class Ad1_accessibilityCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, Category = UI)
 	TSubclassOf<UA11yMenuWidget> AccessibilityMenuClass;
-	
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputMappingContext* DefaultMappingContext;
+
 protected:
 
 	/** Jump Input Action */

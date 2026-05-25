@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
 #include "InputActionValue.h"
 #include "d1_accessibility.h"
 
@@ -52,6 +53,30 @@ Ad1_accessibilityCharacter::Ad1_accessibilityCharacter()
 
 void Ad1_accessibilityCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer())
+		{
+			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+			{
+				
+				// if (UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings())
+				// {
+				// 	Settings->RegisterInputMappingContext(DefaultMappingContext);
+				// }
+				
+				FModifyContextOptions ContextOptions;            
+				ContextOptions.bNotifyUserSettings = true; 
+				
+				if (DefaultMappingContext)
+				{
+					Subsystem->AddMappingContext(DefaultMappingContext, 0, ContextOptions);
+				}
+			}
+		}
+	}
+	
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
@@ -75,6 +100,7 @@ void Ad1_accessibilityCharacter::SetupPlayerInputComponent(UInputComponent* Play
 	}
 }
 
+
 void Ad1_accessibilityCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -95,11 +121,11 @@ void Ad1_accessibilityCharacter::Look(const FInputActionValue& Value)
 
 void Ad1_accessibilityCharacter::OpenMenu()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Tab pressed"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Tab pressed"));
 	
 	if (AccessibilityMenuClass)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Accessibility Menu Opened"));
+		// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Accessibility Menu Opened"));
 
 		//  create a new User Widget of our AccessibilityMenuClass, and make it be managed by our Game Instance
 		UA11yMenuWidget* AccessibilityMenu = Cast<UA11yMenuWidget>(CreateWidget(GetGameInstance(), AccessibilityMenuClass));
