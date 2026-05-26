@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="58414001-b3ea-46d7-acac-43939c530a5c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.d1_accessibility.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.d1_accessibility.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/BP_RebindWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/BP_RebindWidget.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/InputSlotWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/InputSlotWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/d1_accessibility/RebindWidget.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +121,7 @@
       <option name="presentableId" value="Default" />
       <updated>1779722765685</updated>
       <workItem from="1779722776719" duration="14837000" />
-      <workItem from="1779739835846" duration="3253000" />
+      <workItem from="1779739835846" duration="3556000" />
     </task>
     <servers />
   </component>
