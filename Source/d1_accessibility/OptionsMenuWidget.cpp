@@ -139,16 +139,5 @@ void UOptionsMenuWidget::DeficiencyTypeUpdate(FString Value, ESelectInfo::Type N
 		 GameInstance->ColourDeficiencyIndex = ColourDeficiencyIndex;
 	}
 	
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,                     // Key (-1 = new message every time)
-			5.0f,                   // Duration in seconds
-			FColor::Yellow,         // Text colour
-			FString::Printf(
-				TEXT("Selection Changed: %d"),
-				ColourDeficiencyIndex)
-		);
-	}
 	UpdateColourDeficiencyTint();
 }
