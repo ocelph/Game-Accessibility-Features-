@@ -2,7 +2,7 @@
 
 
 #include "OptionsMenuWidget.h"
-
+#include "AccessibilityGameInstance.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UOptionsMenuWidget::NativeConstruct()
@@ -13,16 +13,9 @@ void UOptionsMenuWidget::NativeConstruct()
 		BackButton->OnClicked.AddDynamic(this,&UOptionsMenuWidget::CloseMenu);
 	}
 	
-	// CHECKBOX 
-	if (ColourCorrectionOnCheckBox)
+	if (UAccessibilityGameInstance* GameInstance = Cast<UAccessibilityGameInstance>(GetGameInstance()))
 	{
-		ColourCorrectionOnCheckBox->OnCheckStateChanged.AddDynamic(this, &UOptionsMenuWidget::ToggleCorrectionOn);
-	}
-	
-	// SLIDER
-	if (ColourDeficiencySeveritySlider)
-	{
-		ColourDeficiencySeveritySlider->OnValueChanged.AddDynamic(this, &UOptionsMenuWidget::SeverityUpdate);
+		ColourDeficiencyIndex = GameInstance->ColourDeficiencyIndex ;
 	}
 	
 	// DROPDOWN
@@ -35,13 +28,11 @@ void UOptionsMenuWidget::NativeConstruct()
 		ColourDeficiencyType->AddOption(TEXT("Protanope"));
 		ColourDeficiencyType->AddOption(TEXT("Tritanope"));
 
-		ColourDeficiencyType->SetSelectedIndex(0);
+		ColourDeficiencyType->SetSelectedIndex(ColourDeficiencyIndex);
 
 		ColourDeficiencyType->OnSelectionChanged.AddDynamic(this, &UOptionsMenuWidget::DeficiencyTypeUpdate);
 	}
-
-
-
+	
 }
 
 void UOptionsMenuWidget::CloseMenu()
@@ -49,51 +40,115 @@ void UOptionsMenuWidget::CloseMenu()
 	RemoveFromParent();
 }
 
-void UOptionsMenuWidget::UpdateColourDeficiency()
+void UOptionsMenuWidget::UpdateColourDeficiencyTint()
 {
 	//  check what type of colour deficiency we want to use based on the dropdown,
-	//  then call the WidgetBlueprintLibrary to call the function to set the Colour Deficiency type, severity, and correction toggle
-	EColorVisionDeficiency VisionDeficiency;
+	
+	if (!GlobalTintCollection)
+	{
+		return;
+	}
+	
+	UMaterialParameterCollectionInstance* MPC = GetWorld()->GetParameterCollectionInstance(GlobalTintCollection);
+	
 	switch (ColourDeficiencyIndex)
 	{
-	case 0 :
-		VisionDeficiency = EColorVisionDeficiency::NormalVision;
+	case 0 : // Normal
+		MPC->SetVectorParameterValue(
+			TEXT("PlatformTint"),
+			FLinearColor(FColor::FromHex(TEXT("#5262DA"))));
+
+		MPC->SetVectorParameterValue(
+			TEXT("WallTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
+		
+		MPC->SetVectorParameterValue(
+			TEXT("CharacterTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
 		break;
-	case 1 :
-		VisionDeficiency = EColorVisionDeficiency::Deuteranope;
+
+	
+	case 1 : // Deuteranope;
+		MPC->SetVectorParameterValue(
+			TEXT("PlatformTint"),
+			FLinearColor(FColor::FromHex(TEXT("#5316BFFF"))));
+
+		MPC->SetVectorParameterValue(
+			TEXT("WallTint"),
+			FLinearColor(FColor::FromHex(TEXT("#F3C658FF"))));
+		
+		MPC->SetVectorParameterValue(
+			TEXT("CharacterTint"),
+			FLinearColor(FColor::FromHex(TEXT("#000000"))));
 		break;
-	case 2 :
-		VisionDeficiency = EColorVisionDeficiency::Protanope;
+		
+		
+	case 2 : // Protanope;
+		MPC->SetVectorParameterValue(
+			TEXT("PlatformTint"),
+			FLinearColor(FColor::FromHex(TEXT("#1AFF1AFF"))));
+
+		MPC->SetVectorParameterValue(
+			TEXT("WallTint"),
+			FLinearColor(FColor::FromHex(TEXT("#002292FF"))));
+		
+		MPC->SetVectorParameterValue(
+			TEXT("CharacterTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
 		break;
-	case 3 :
-		VisionDeficiency = EColorVisionDeficiency::Tritanope;
+		
+	case 3 : // Tritanope;
+		MPC->SetVectorParameterValue(
+			TEXT("PlatformTint"),
+			FLinearColor(FColor::FromHex(TEXT("#174C10FF"))));
+
+		MPC->SetVectorParameterValue(
+			TEXT("WallTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
+		
+		MPC->SetVectorParameterValue(
+			TEXT("CharacterTint"),
+			FLinearColor(FColor::FromHex(TEXT("#F9B0B7FF"))));
 		break;
+		
+		
 	default:
-		VisionDeficiency = EColorVisionDeficiency::NormalVision;
+		MPC->SetVectorParameterValue(
+			TEXT("PlatformTint"),
+			FLinearColor(FColor::FromHex(TEXT("#5262DA"))));
+
+		MPC->SetVectorParameterValue(
+			TEXT("WallTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
+		
+		MPC->SetVectorParameterValue(
+			TEXT("CharacterTint"),
+			FLinearColor(FColor::FromHex(TEXT("#FFFFFF"))));
 		break;
+
 	}
-	
-	if (bCorrectionIsOn)
-	{
-		UWidgetBlueprintLibrary::SetColorVisionDeficiencyType(VisionDeficiency, ColourDeficiencySeverity, bCorrectionIsOn, true);
-	}
-	
 }
 
-void UOptionsMenuWidget::SeverityUpdate(float Value)
-{
-	ColourDeficiencySeverity = Value;
-	UpdateColourDeficiency();
-}
-
-void UOptionsMenuWidget::ToggleCorrectionOn(bool Value)
-{
-	bCorrectionIsOn = Value;
-	UpdateColourDeficiency();
-}
 
 void UOptionsMenuWidget::DeficiencyTypeUpdate(FString Value, ESelectInfo::Type NewType)
 {
 	ColourDeficiencyIndex = ColourDeficiencyType->GetSelectedIndex();
-	UpdateColourDeficiency();
+	
+	if (UAccessibilityGameInstance* GameInstance = Cast<UAccessibilityGameInstance>(GetGameInstance()))
+	{
+		 GameInstance->ColourDeficiencyIndex = ColourDeficiencyIndex;
+	}
+	
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,                     // Key (-1 = new message every time)
+			5.0f,                   // Duration in seconds
+			FColor::Yellow,         // Text colour
+			FString::Printf(
+				TEXT("Selection Changed: %d"),
+				ColourDeficiencyIndex)
+		);
+	}
+	UpdateColourDeficiencyTint();
 }
